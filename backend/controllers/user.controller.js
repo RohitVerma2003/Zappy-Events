@@ -216,3 +216,60 @@ export const sendCompletionOtpToUser = async (req, res) => {
     }
 };
 
+export const getUserEvents = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const events = await Event.find({ userId })
+            .populate({
+                path: "vendorId",
+                select: "name companyName initials"
+            })
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            success: true,
+            count: events.length,
+            events
+        });
+    } catch (error) {
+        console.error("Get user events error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+};
+
+export const getUserEventById = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { eventId } = req.params;
+
+    const event = await Event.findOne({
+      _id: eventId,
+      userId
+    }).populate({
+      path: "vendorId",
+      select: "name email _id"
+    });
+
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      event
+    });
+  } catch (error) {
+    console.error("Get user event error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};
