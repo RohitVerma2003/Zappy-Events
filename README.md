@@ -239,6 +239,11 @@ EMAIL=smtp_email
 PASSWORD=email_password
 ```
 
+Add starting data to DB:
+```cmd
+node ./template.js
+```
+
 ---
 
 ### 2️⃣ User App
