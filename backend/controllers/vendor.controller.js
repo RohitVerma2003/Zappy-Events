@@ -314,3 +314,60 @@ export const setupCompleted = async (req, res) => {
     }
 };
 
+export const getVendorEvents = async (req, res) => {
+    try {
+        const vendorId = req.vendor._id;
+
+        const events = await Event.find({ vendorId })
+            .populate({
+                path: "userId",
+                select: "name email _id "
+            })
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            success: true,
+            count: events.length,
+            events
+        });
+    } catch (error) {
+        console.error("Get user events error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+};
+
+export const getVendorEventById = async (req, res) => {
+  try {
+    const vendorId = req.vendor._id;
+    const { eventId } = req.params;
+
+    const event = await Event.findOne({
+      _id: eventId,
+      vendorId
+    }).populate({
+      path: "vendorId",
+      select: "name email _id"
+    });
+
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      event
+    });
+  } catch (error) {
+    console.error("Get user event error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};

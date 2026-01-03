@@ -7,8 +7,8 @@ import bcrypt from "bcryptjs";
 
 dotenv.config();
 
-const user = { name: "Rohit Verma", email: "rvermajio78300@gmail.com", password: "Rohit@123" }
-const vendor = { name: "Amit", email: "amit@gmail.com", password: "Amit@123" }
+const user = { name: "User", email: "exampleuser@gmail.com", password: "exmaple@123" }
+const vendor = { name: "Vendor", email: "exmaplevendor@gmail.com", password: "exmaple@123" }
 
 
 const seedUserAndVendor = async () => {

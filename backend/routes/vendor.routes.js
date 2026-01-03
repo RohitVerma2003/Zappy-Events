@@ -1,5 +1,5 @@
 import express from "express";
-import { setupCompleted, vendorArrived, vendorLogin, verifyArrivalOtp, verifyCompletionOtp } from "../controllers/vendor.controller.js";
+import { getVendorEventById, getVendorEvents, setupCompleted, vendorArrived, vendorLogin, verifyArrivalOtp, verifyCompletionOtp } from "../controllers/vendor.controller.js";
 import { vendorAuthMiddleware } from "../middleware/auth.middleware.js";
 import { uploadArrivalImage } from "../middleware/upload.middleware.js";
 import { uploadSetupImages } from "../middleware/uploadSetup.middleware.js";
@@ -36,5 +36,13 @@ router.post(
     vendorAuthMiddleware,
     verifyCompletionOtp
 )
+
+router.get("/vendor/events", vendorAuthMiddleware, getVendorEvents);
+
+router.get(
+  "/vendor/event/:eventId",
+  vendorAuthMiddleware,
+  getVendorEventById
+);
 
 export default router;

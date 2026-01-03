@@ -223,7 +223,7 @@ export const getUserEvents = async (req, res) => {
         const events = await Event.find({ userId })
             .populate({
                 path: "vendorId",
-                select: "name companyName initials"
+                select: "name email _id"
             })
             .sort({ createdAt: -1 });
 
